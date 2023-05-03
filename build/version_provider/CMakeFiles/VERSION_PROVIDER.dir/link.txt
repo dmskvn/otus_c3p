@@ -1,0 +1,2 @@
+/usr/bin/ar qc libVERSION_PROVIDER.a CMakeFiles/VERSION_PROVIDER.dir/src/VersionProviderImpl.cpp.o
+/usr/bin/ranlib libVERSION_PROVIDER.a

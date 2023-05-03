@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libVERSION_PROVIDER.a"
+)
