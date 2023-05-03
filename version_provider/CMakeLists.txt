@@ -41,3 +41,7 @@ target_compile_definitions(${TARGET_NAME}
   PRIVATE ${DEFS_PRIV}
   PUBLIC ${DEFS_PUB}
 )
+
+enable_testing()
+
+add_test(VERSION_PROVIDER_TEST test)
