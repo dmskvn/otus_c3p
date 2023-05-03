@@ -39,5 +39,3 @@ target_compile_definitions(${TARGET_NAME}
   PRIVATE ${DEFS_PRIV}
   PUBLIC ${DEFS_PUB}
 )
-
-add_test(${TARGET_NAME} ${TARGET_NAME})

@@ -42,6 +42,3 @@ target_compile_definitions(${TARGET_NAME}
   PUBLIC ${DEFS_PUB}
 )
 
-enable_testing()
-
-add_test(VERSION_PROVIDER_TEST test)

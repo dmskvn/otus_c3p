@@ -13,6 +13,4 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
 
-add_test(VERSION_PROVIDER_TEST VERSION_PROVIDER_TEST)
-
-
+add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
