@@ -1,9 +1,0 @@
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/CMakeFiles/otus-c3p-hw.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/CMakeFiles/edit_cache.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/CMakeFiles/rebuild_cache.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/CMakeFiles/VERSION_PROVIDER.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/CMakeFiles/edit_cache.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/CMakeFiles/rebuild_cache.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/test/CMakeFiles/VERSION_PROVIDER_TEST.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/test/CMakeFiles/edit_cache.dir
-/home/denis/study/otus/c3p/repo/otus_c3p/project/build/version_provider/test/CMakeFiles/rebuild_cache.dir

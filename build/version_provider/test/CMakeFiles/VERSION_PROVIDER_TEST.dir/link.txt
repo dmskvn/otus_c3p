@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/VERSION_PROVIDER_TEST.dir/tests.cpp.o -o VERSION_PROVIDER_TEST  ../libVERSION_PROVIDER.a -lgtest -lgmock -lpthread 

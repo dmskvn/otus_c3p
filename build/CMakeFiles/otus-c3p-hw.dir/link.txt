@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/otus-c3p-hw.dir/main.cpp.o -o otus-c3p-hw  version_provider/libVERSION_PROVIDER.a 
