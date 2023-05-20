@@ -29,7 +29,7 @@ TEST(TestIpFilter, CorrectFilter_1_2_3_4)
 TEST(TestIpFilter, CheckOrder)
 {
     const auto ipprc = ip_filter::IPFilterFactory{}();
-    auto accept_all = [](const ip_filter::IP& s){
+    auto accept_all = [](const ip_filter::IP&){
         return true; 
     };
 

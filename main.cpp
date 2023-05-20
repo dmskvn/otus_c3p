@@ -26,7 +26,7 @@ int main ()
 {
     auto ipFilter = ip_filter::IPFilterFactory{}();
     
-    auto accept_all = [](const ip_filter::IP& s){return true;};
+    auto accept_all = [](const ip_filter::IP&){return true;};
 
     auto accept_if_first_byte_is_1 = [](const ip_filter::IP& s){
         return std::get<0>(s) == 1;
