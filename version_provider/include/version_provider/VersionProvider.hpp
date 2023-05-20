@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 #include <string>
 
@@ -19,4 +21,4 @@ struct VersionProviderFactory
     std::unique_ptr<IVersionProvider> operator()();
 };
 
-}; // namespace version_provider
+} // namespace version_provider

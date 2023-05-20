@@ -14,3 +14,41 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
 
 add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
+
+if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        /W4
+    )
+else ()
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+endif()
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+
+set(CPACK_GENERATOR DEB)
+
+set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
+
+set(CPACK_PACKAGE_CONTACT example@example.com)
+
+include(CPack)
+
+enable_testing()
+
+add_test(test_version test_version)
