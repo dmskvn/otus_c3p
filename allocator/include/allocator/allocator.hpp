@@ -1,26 +1,30 @@
 #pragma once
 #include <array>
 #include <exception>
+#include <iostream>
 #include <limits>
 #include <memory>
 
 namespace allocator
 {
 
-template <class T, unsigned int N = 5> struct CustomAllocator
+template <class T> struct CustomAllocator
 {
     using value_type = T;
 
   private:
 
+    static constexpr std::size_t CHUNK_SIZE = 20;
+    static constexpr std::size_t PAGES_QTY = 3;
+
     struct MemoryPage
     {
-        std::size_t free = N;
+        std::size_t free = CHUNK_SIZE;
         std::size_t tail = 0;
-        std::array<char, sizeof(T) * N> memory;
+        std::array<char, sizeof(T) * CHUNK_SIZE> memory;
     };
 
-    std::array<MemoryPage, 3> pages;
+    std::array<MemoryPage, PAGES_QTY> pages;
 
   public:
 
@@ -41,20 +45,20 @@ template <class T, unsigned int N = 5> struct CustomAllocator
     {
         const auto page_num = find_page_num_by_addr(p);
         pages[page_num].free += n;
-        if (pages[page_num].free == N)
+        if (pages[page_num].free == CHUNK_SIZE)
         {
             pages[page_num].tail = 0;
         }
     }
 
-    // template <class U> struct rebind
-    // {
-    //     typedef cpp_11_allocator<U> other;
-    // };
+    template <class U> struct rebind
+    {
+        typedef CustomAllocator<U> other;
+    };
 
     using propagate_on_container_copy_assignment = std::true_type;
     using propagate_on_container_move_assignment = std::true_type;
-    using propagate_on_container_swap = std::true_type; // UB if std::false_type and a1 != a2;
+    using propagate_on_container_swap = std::true_type;
 
     std::size_t find_optimum_page_to_allocate(const std::size_t to_alloc)
     {
@@ -88,8 +92,12 @@ template <class T, unsigned int N = 5> struct CustomAllocator
     {
         for (std::size_t i = 0; i < pages.size(); ++i)
         {
-            const auto first_chunk_of_page = static_cast<T*>(&pages[i].memory());
-            const auto last_chunk_of_page = static_cast<T*>(&pages[pages.size() - 1].memory());
+            if (pages[i].tail == 0)
+            {
+                continue;
+            }
+            const auto first_chunk_of_page = reinterpret_cast<T*>(&pages[i].memory[0]);
+            const auto last_chunk_of_page = reinterpret_cast<T*>(&pages[i].memory[pages[i].memory.size() - 1]);
             if (addr >= first_chunk_of_page && addr <= last_chunk_of_page)
             {
                 return i;
@@ -98,5 +106,16 @@ template <class T, unsigned int N = 5> struct CustomAllocator
         throw std::bad_alloc();
     }
 };
+template <class T, class U>
+constexpr bool operator==(const CustomAllocator<T>& a1, const CustomAllocator<U>& a2) noexcept
+{
+    return a1.pool == a2.pool;
+}
+
+template <class T, class U>
+constexpr bool operator!=(const CustomAllocator<T>& a1, const CustomAllocator<U>& a2) noexcept
+{
+    return a1.pool != a2.pool;
+}
 
 } // namespace allocator
