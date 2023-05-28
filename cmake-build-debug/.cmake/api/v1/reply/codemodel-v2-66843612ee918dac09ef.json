@@ -1,0 +1,195 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-ffcfa1a4eb8da63b108c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "allocator",
+					"jsonFile" : "directory-allocator-Debug-d0c0b96464e7485e3723.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "allocator",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "version_provider",
+					"childIndexes" : 
+					[
+						3
+					],
+					"jsonFile" : "directory-version_provider-Debug-737c9b85ef5559f5ebef.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "version_provider",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "version_provider/test",
+					"jsonFile" : "directory-version_provider.test-Debug-bc9162d33f679574a7fb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "version_provider/test",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "ip_filter",
+					"childIndexes" : 
+					[
+						5
+					],
+					"jsonFile" : "directory-ip_filter-Debug-3cb363f3dfcbbd5e6d4e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "ip_filter",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "ip_filter/test",
+					"jsonFile" : "directory-ip_filter.test-Debug-8d86ef7ac96b53ac2d4e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16.3"
+					},
+					"parentIndex" : 4,
+					"projectIndex" : 0,
+					"source" : "ip_filter/test",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"name" : "otus-c3p",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "ALLOCATOR::@b7941848bdffc44b5b9b",
+					"jsonFile" : "target-ALLOCATOR-Debug-41ed18023554d4a691fa.json",
+					"name" : "ALLOCATOR",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "IP_FILTER::@4dab5069ccaede49032c",
+					"jsonFile" : "target-IP_FILTER-Debug-5efa6c2c1c26b2056813.json",
+					"name" : "IP_FILTER",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "IP_FILTER_TEST::@d07834045277ff05dfd0",
+					"jsonFile" : "target-IP_FILTER_TEST-Debug-1a0c1e54c49955f91590.json",
+					"name" : "IP_FILTER_TEST",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "VERSION_PROVIDER::@f975044a9a053588af0b",
+					"jsonFile" : "target-VERSION_PROVIDER-Debug-a30e4e572f17a2360357.json",
+					"name" : "VERSION_PROVIDER",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "VERSION_PROVIDER_TEST::@7e227619202686a4d83c",
+					"jsonFile" : "target-VERSION_PROVIDER_TEST-Debug-003d27280620e48b1bff.json",
+					"name" : "VERSION_PROVIDER_TEST",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "otus-c3p::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-otus-c3p-Debug-827a3b6a34184517a805.json",
+					"name" : "otus-c3p",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/denis/study/otus/c3p/repo/otus_c3p/cmake-build-debug",
+		"source" : "/home/denis/study/otus/c3p/repo/otus_c3p"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
