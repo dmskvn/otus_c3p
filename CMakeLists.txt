@@ -7,18 +7,20 @@ project(otus-c3p VERSION ${PROJECT_VESRION})
 
 enable_testing()
 
-
 add_subdirectory(allocator)
 
 add_subdirectory(version_provider)
 
 add_subdirectory(ip_filter)
 
+add_subdirectory(ip_template)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
 target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
 target_link_libraries(${PROJECT_NAME} PRIVATE "IP_FILTER")
+target_link_libraries(${PROJECT_NAME} PRIVATE "IP_TEMPLATE")
 
 add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
 
