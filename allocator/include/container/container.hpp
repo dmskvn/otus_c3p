@@ -1,5 +1,6 @@
 #pragma once
 #include "string.h"
+#include <cstddef>
 
 namespace container
 {
@@ -19,6 +20,31 @@ template <typename T, typename Alloc> class CustomList
         m_tail = m_head;
     }
 
+    CustomList(const CustomList& list)
+    {
+        m_head = nodeAlloc.allocate(1);
+        m_tail = m_head;
+
+        auto curNode = list.m_head;
+        while (curNode)
+        {
+            auto nextNode = curNode->next;
+            push_back(curNode->val);
+            curNode = nextNode;
+        }
+    }
+
+    ~CustomList()
+    {
+        auto curNode = m_head;
+        while (curNode)
+        {
+            auto nextNode = curNode->next;
+            nodeAlloc.deallocate(curNode, 1);
+            curNode = nextNode;
+        }
+    }
+
     void push_back(const T& val)
     {
         m_tail->next = nodeAlloc.allocate(1);
@@ -31,6 +57,17 @@ template <typename T, typename Alloc> class CustomList
     {
         return m_head;
     }
+
+    Node* getNext(Node* node) const
+    {
+        return node->next;
+    }
+
+    bool hasNext(Node* node) const
+    {
+        return node->next != nullptr;
+    }
+
 
     std::size_t size() const
     {

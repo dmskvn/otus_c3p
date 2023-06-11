@@ -17,16 +17,38 @@ template <typename T, typename F=void>
 struct TypeSelector
 {};
 
+/**
+ * @brief SFINAE selector for vector
+ * 
+ * @tparam T 
+ */
 template <typename T>
 struct TypeSelector<std::vector<T>> {using type = TypeIsContainer;};
 
+/**
+ * @brief SFINAE selector for set container
+ * 
+ * @tparam T 
+ */
 template <typename T>
 struct TypeSelector<std::set<T>> {using type = TypeIsContainer;};
 
-
+/**
+ * @brief SFINAE selector for int
+ * 
+ * @tparam T 
+ */
 template<typename T>
 struct TypeSelector<T, typename std::enable_if<std::is_arithmetic<T>::value>::type>{using type = TypeIsInt;};
 
+/**
+ * @brief Prints ip represented as int variable 
+ * 
+ * @tparam T Int type
+ * @param val Int value
+ * @param printDot Prints dot after int
+ * @return std::enable_if<std::is_same<typename TypeSelector<T>::type, TypeIsInt>::value, void>::type 
+ */
 template <typename T>
 typename std::enable_if<std::is_same<typename TypeSelector<T>::type, TypeIsInt>::value, void>::type
 print (const T& val, bool printDot = false)
@@ -44,6 +66,11 @@ print (const T& val, bool printDot = false)
     }
 }
 
+/**
+ * @brief Prints container elements
+ * 
+ * @tparam container 
+ */
 template <typename T>
 typename std::enable_if<std::is_same<typename TypeSelector<T>::type, TypeIsContainer>::value, void>::type
 print (const T& container)
@@ -57,6 +84,11 @@ print (const T& container)
 
 namespace tuple_helper{
 
+/**
+ * @brief Check if all tuple types are equal otherwise call compile-time exception
+ * 
+ * @tparam Tuple 
+ */
 template<typename Tuple, std::size_t I>
 struct check_tuple_args_impl
 {
@@ -66,6 +98,11 @@ struct check_tuple_args_impl
     check_tuple_args_impl <Tuple, I - 1> _t;
 };
 
+/**
+ * @brief Check if pre-last and last tuple types are equal otherwise call compile-time exception
+ * 
+ * @tparam Tuple 
+ */
 template<typename Tuple>
 struct check_tuple_args_impl <Tuple, 0>
 {
@@ -74,12 +111,24 @@ struct check_tuple_args_impl <Tuple, 0>
     static_assert(std::is_same<prev_type, curr_type>::value, "Check template parameter");
 };
 
+/**
+ * @brief Check if there all template arguments are equal otherwise call compile-time exception
+ * 
+ * @tparam Tuple 
+ */
 template<typename Tuple>
 constexpr void check_tuple()
 {
     check_tuple_args_impl <Tuple, std::tuple_size<Tuple>::value - 1> check;
 }
 
+/**
+ * @brief This function prints all elements of template
+ * 
+ * @tparam I Increasing index
+ * @tparam J Decreasing index
+ * @tparam Args Parameters pack of tuple
+ */
 template <std::size_t I, std::size_t J, typename ...Args>
 struct PrintImpl
 {
@@ -99,6 +148,12 @@ void print (const std::tuple<Args...>& tuple, bool printDot = false)
 }
 };
 
+/**
+ * @brief This function prints last element of template
+ * 
+ * @tparam Args 
+ * @param tuple template to print
+ */
 template <std::size_t I,  typename ...Args>
 struct PrintImpl<I, 0, Args...>
 {
@@ -110,7 +165,12 @@ struct PrintImpl<I, 0, Args...>
 
 }
 
-
+/**
+ * @brief This function prints all template members if their types are equal
+ * 
+ * @tparam Args 
+ * @param tuple template to print
+ */
 template <typename ...Args>
 void print(const std::tuple<Args...>& tuple)
 {
@@ -118,15 +178,4 @@ void print(const std::tuple<Args...>& tuple)
     tuple_helper::check_tuple<std::tuple<Args...>>();
     tuple_helper::PrintImpl<0, std::tuple_size<tuple_type>::value - 1, Args...> t;
     t.print(tuple, true);
-}
-
-
-int main()
-{
-    std::vector <int32_t> d {1,2,3,4,5};
-    //print (d);
-    int j = 2130706433;
-    //print(j);
-    std::tuple <int, int,int> t {1,2,3};
-    print (t);
 }
