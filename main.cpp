@@ -15,4 +15,8 @@ int main() {
     ip_template::print( std::vector<int>{100, 200, 300, 400} ); // 100.200.300.400
     ip_template::print( std::list<int>{400, 300, 200, 100} ); // 400.300.200.100
     ip_template::print( std::make_tuple<int>(123, 456, 789, 0) ); // 123.456.789.0
+    ip_template::print( std::set<short>{1} ); // Review check
+    ip_template::print( std::list<short>{1} ); // Review check
+    ip_template::print( std::string("Review check") ); // Review check
+
 }
