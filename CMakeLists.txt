@@ -15,12 +15,19 @@ add_subdirectory(ip_filter)
 
 add_subdirectory(ip_template)
 
+add_subdirectory(editor)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
 target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
 target_link_libraries(${PROJECT_NAME} PRIVATE "IP_FILTER")
 target_link_libraries(${PROJECT_NAME} PRIVATE "IP_TEMPLATE")
+target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORPLOT")
+target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDRAWING")
+target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDOCUMENT")
+
+
 
 add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
 
