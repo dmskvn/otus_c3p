@@ -4,6 +4,10 @@
 
 namespace editor
 {
+    /**
+     * @brief Прямая линия
+     * 
+     */
     struct Line : virtual IItem
     {
         //virtual void draw(const IPlot& plot) override;
