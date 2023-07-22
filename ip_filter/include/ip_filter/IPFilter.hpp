@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 #include <tuple>
+#include <vector> 
 
 namespace ip_filter
 {

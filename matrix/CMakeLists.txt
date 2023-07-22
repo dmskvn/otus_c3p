@@ -1,14 +1,7 @@
-set(TARGET_NAME EDITORDRAWING)
+set(TARGET_NAME MATRIX)
 
 set(SRCS
-  include/Item.hpp
-
-  include/items/Circle.hpp
-  include/items/Line.hpp
-  include/items/Rectangle.hpp
-
-  include/fillings/IFilling.hpp
-  include/fillings/ContourFilling.hpp
+  include/matrix/Matrix.hpp
 )
 
 set(LIBS_PRIV
@@ -18,9 +11,12 @@ set(LIBS_PUB
 )
 
 set(DIRS_PRIV
+  ${CMAKE_CURRENT_BINARY_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 set(DIRS_PUB
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 add_library(${TARGET_NAME} INTERFACE)

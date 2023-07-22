@@ -20,7 +20,7 @@ set(DIRS_PUB
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-add_library(${TARGET_NAME} INTERFACE ${SRCS})
+add_library(${TARGET_NAME} INTERFACE)
 
 target_link_libraries(${TARGET_NAME}
   PRIVATE ${LIBS_PRIV}
