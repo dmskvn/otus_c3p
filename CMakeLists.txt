@@ -19,6 +19,8 @@ add_subdirectory(editor)
 
 add_subdirectory(matrix)
 
+add_subdirectory(cmd)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
@@ -29,7 +31,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORPLOT")
 target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDRAWING")
 target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDOCUMENT")
 target_link_libraries(${PROJECT_NAME} PRIVATE "MATRIX")
-
+target_link_libraries(${PROJECT_NAME} PRIVATE "CMD")
 
 add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
 
