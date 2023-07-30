@@ -19,7 +19,7 @@ class Matrix
         std::size_t _x = 0;
         std::size_t _y = 0;
 
-         public:
+        public:
 
         MatrixProxy(Matrix& m, std::size_t x)
             :_m(m)
@@ -47,7 +47,6 @@ class Matrix
         {
             return _m.load(_x, _y);
         }
-        
     };
 
     MatrixProxy operator[](const std::size_t x)
@@ -63,6 +62,7 @@ class Matrix
     xy_strg_type _elems;
 
     T _acum = dflt;
+    std::size_t _size = 0;
     
     bool contains (const std::size_t x, const std::size_t y) const
     {
@@ -94,10 +94,17 @@ class Matrix
         {
             _elems[x][y] = _acum;
             _acum = dflt;
+            _size++;
         }
     }
 
     public:
+
+
+    std::size_t size() const
+    {
+        return _size;
+    }
 
 
     class MatrixIterator
@@ -111,6 +118,7 @@ class Matrix
         y_it_type _y_it;
         y_it_type _y_it_end;
 
+        std::size_t _size = 0;
 
         public:
         MatrixIterator(xy_it_type xy_it, xy_it_type xy_it_end, y_it_type y_it, y_it_type y_it_end)
