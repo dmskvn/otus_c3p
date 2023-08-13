@@ -80,8 +80,14 @@ namespace byn
                     [&]{
                     ProcessFilesGroup(groupBegin, it, gapSize);
                 });
+                threads.push_back(std::move(thread));
                 groupBegin = it;
             }
+        }
+
+        for (const auto& thread : threads)
+        {
+            thread.wait();
         }
 
         ProcessFilesGroup(groupBegin, end, gapSize);
