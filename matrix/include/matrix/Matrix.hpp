@@ -118,6 +118,10 @@ class Matrix
         y_it_type _y_it;
         y_it_type _y_it_end;
 
+        std::size_t _x = 0;
+        std::size_t _y = 0;
+
+
         std::size_t _size = 0;
 
         public:
@@ -133,8 +137,11 @@ class Matrix
             std::advance(_y_it, 1);
             if (_y_it == _y_it_end)
             {
+                ++_y;
                 if (std::next(_xy_it) != _xy_it_end)
                 {
+                    ++_x;
+                    _y=0;
                     std::advance(_xy_it, 1);
                     _y_it = _xy_it->second.begin();
                     _y_it_end = _xy_it->second.end();
@@ -152,10 +159,15 @@ class Matrix
             return false;
         }
 
-        T& operator* () const
+        std::tuple<std::size_t&, std::size_t&, T&> operator* ()
         {
-            return _y_it->second;
+            return std::tuple<std::size_t&, std::size_t&, T&> (_x, _y, _y_it->second);
         }
+
+//        T& operator* () const
+//        {
+//            return _y_it->second;
+//        }
     };
 
     MatrixIterator begin()
