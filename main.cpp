@@ -4,56 +4,51 @@
 #include <vector>
 #include <list>
 #include <string>
-#include <matrix/Matrix.hpp>
+#include <fstream>
+#include <chrono>
 
-int main() {
-    
-    matrix::Matrix<int, 1> m;
+#include <cmd/ICommandStorage.hpp>
+#include <cmd/ICommandFactory.hpp>
 
-    // ----------
 
-    m[0][0] = 0;
-    m[1][1] = 1;
-    m[2][2] = 2;
-    m[3][3] = 3;
-    m[4][4] = 4;
-    m[5][5] = 5;
-    m[6][6] = 6;
-    m[7][7] = 7;
-    m[8][8] = 8;
-    m[9][9] = 9;
+int main(int argc, char *argv[]) {
 
-    // ----------
-    
-    m[0][9] = 0;
-    m[1][8] = 1;
-    m[2][7] = 2;
-    m[3][6] = 3;
-    m[4][5] = 4;
-    m[5][4] = 5;
-    m[6][3] = 6;
-    m[7][2] = 7;
-    m[8][1] = 8;
-    m[9][0] = 9;
-
-    // ----------
-
-    for (std::size_t x = 1; x < 9; ++x)
+    if (argc != 2)
     {
-        for (std::size_t y = 1; y < 9; ++y)
+        std::logic_error ("Only one parameter expected");
+    }
+
+    std::size_t pkg_size = std::atoi(argv[1]);
+
+    auto factory = cmd::CreateCommandFactory(pkg_size);
+    auto strg = cmd::CreateStorage();
+    auto line = std::string{};
+    auto fout = std::fstream{};
+    bool should_init_fout = true;
+
+    while (std::getline(std::cin, line))
+    {
+        auto cmd = factory->Create(line);
+        auto pkg = cmd->execute(*strg);
+
+        if (should_init_fout)
         {
-            std::cout << m[x][y] << " ";
+            const auto clock = std::chrono::system_clock::now();
+            const auto time = std::chrono::duration_cast<std::chrono::seconds>(
+                   clock.time_since_epoch()).count();
+            
+            fout.open("bulk"+std::to_string(time)+"log", std::fstream::out);
         }
-        std::cout << '\n';
-    }
 
-    for(auto c : m)
-    {
-        std::size_t x;
-        std::size_t y;
-        int v;
-        std::tie(x, y, v) = c;
-        std::cout << x << y << v << std::endl;
+        for (const auto cmnd : pkg)
+        {
+            std::cout << cmnd << " ";
+            fout << cmnd << " ";
+        }
+        
+        std::cout << std::endl;
+        fout.flush();
+        fout.close();
     }
-
+   
 }
