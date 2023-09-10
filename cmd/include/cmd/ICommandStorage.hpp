@@ -16,7 +16,7 @@ class ICommandStorage
     virtual std::vector<std::string> Release() = 0;
     virtual void BlockOpening() = 0;
     virtual void BlockClosing() = 0;
-    virtual bool InBlock() const = 0;
+    virtual std::size_t Block() const = 0;
 
     virtual ~ICommandStorage() = default;
 };

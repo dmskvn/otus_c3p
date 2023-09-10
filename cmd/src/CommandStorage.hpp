@@ -18,7 +18,7 @@ public:
     virtual std::vector<std::string> Release() override;
     virtual void BlockOpening() override;
     virtual void BlockClosing() override;
-    virtual bool InBlock() const override;
+    virtual std::size_t Block() const override;
 
     private:
 

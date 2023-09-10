@@ -6,7 +6,11 @@ namespace cmd
 std::vector<std::string> BlockOpening::execute(ICommandStorage& strg)
 {
     strg.BlockOpening();
-    return strg.Release();
+    if (strg.Block() == 1)
+    {
+        return strg.Release();
+    }
+    return {};
 }
 
 }

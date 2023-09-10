@@ -40,15 +40,23 @@ int main(int argc, char *argv[]) {
             fout.open("bulk"+std::to_string(time)+"log", std::fstream::out);
         }
 
-        for (const auto cmnd : pkg)
+        if (!pkg.empty())
         {
-            std::cout << cmnd << " ";
-            fout << cmnd << " ";
+            std::cout << "bulk:";
+            fout << "bulk:";
+
+            for (const auto& cmnd : pkg)
+            {
+                std::cout << cmnd << " ";
+                fout << cmnd << " ";
+            }
+            std::cout << "\n";
+            fout << "\n";
         }
-        
-        std::cout << std::endl;
-        fout.flush();
-        fout.close();
     }
+
+    std::cout << std::endl;
+    fout.flush();
+    fout.close();
    
 }

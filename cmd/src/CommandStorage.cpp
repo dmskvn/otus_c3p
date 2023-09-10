@@ -27,7 +27,7 @@ namespace cmd
         _braces_ctr--;
     }
 
-    bool CommandStorage::InBlock() const
+    std::size_t CommandStorage::Block() const
     {
         return _braces_ctr;
     }

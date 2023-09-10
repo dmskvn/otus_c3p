@@ -13,7 +13,7 @@ public:
     BlockOpening()
     {}
 
-    virtual std::vector<std::string> execute (ICommandStorage& strg) override;
+    virtual std::vector<std::string> execute(ICommandStorage& strg) override;
 
 };
 
