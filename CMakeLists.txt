@@ -25,6 +25,8 @@ add_subdirectory(bayan)
 
 add_subdirectory(async)
 
+add_subdirectory(lock_free)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
@@ -38,6 +40,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "MATRIX")
 target_link_libraries(${PROJECT_NAME} PRIVATE "CMD")
 target_link_libraries(${PROJECT_NAME} PRIVATE "BAYAN")
 target_link_libraries(${PROJECT_NAME} PRIVATE "ASYNC")
+target_link_libraries(${PROJECT_NAME} PRIVATE "LOCK_FREE")
 
 add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
 
