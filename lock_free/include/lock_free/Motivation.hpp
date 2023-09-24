@@ -5,188 +5,294 @@
 
 namespace lock_free {
 
-class Motivation
-{
-    int m_a = 0;
-    int m_b = 0;
-    int m_c = 0;
-    int m_d = 0;
-    int m_e = 0;
 
-    int m_is_ready;
-
-    int m_counter = 0;
-
-    int m_max_counter = 0;
-
-    void producer ()
+    class MotivationExplanation
     {
-        m_a = 1;
-        m_b = 2;
-        m_c = 3;
-        m_d = 4;
-        m_e = 5;
+        int _a = 0;
+        int _b = 0;
+        int _c = 0;
 
-        m_is_ready = true;
-    }
+        int _s = 0;
 
-    void consumer ()
-    {
-        while (!m_is_ready) {}
-
-        m_is_ready = false;
-
-        m_counter++;
-        //std::cout << m_counter++ << std::endl;
-        if (m_a != 1 || m_b != 2 || m_c != 3 || m_d != 4 || m_e != 5)
+        void producer()
         {
-            std::cout << "YOUR PC IS BROKEN! m_a:" << m_a
-                << " m_b:" << m_b
-                << " m_c:" << m_c
-                << " m_d:" << m_d
-                << " m_e:" << m_e
-                << " m_counter:" << m_counter
-                << std::endl;
-        }
+            int random = 1 + (rand() % 3);
 
-        //std::cout << "ok" << std::endl;
-
-        if (m_max_counter == m_counter) return;
-
-        m_a = 0;
-        m_b = 0;
-        m_c = 0;
-        m_d = 0;
-        m_e = 0;
-    }
-
-
-public:
-
-    Motivation(int max_counter)
-        :m_max_counter(max_counter)
-    {}
-
-    void start_test()
-    {
-
-        while (true) {
-
-            m_is_ready = false;
-
-            //auto future_producer = std::async(std::launch::async, &Motivation::producer, this);
-            //auto future_consumer = std::async(std::launch::async, &Motivation::consumer, this);
-
-            //future_producer.wait();
-
-            //auto test_failed = future_consumer.get();
-            //clear();
-
-            std::thread producer (&Motivation::producer, this);
-            std::thread consumer (&Motivation::consumer,this);
-
-            producer.join();
-            consumer.join();
-
-            if (m_max_counter == m_counter) return;
-        }
-    }
-
-};
-
-
-    class AtomicMotivation
-    {
-
-        std::memory_order m_load_mo;
-        std::memory_order m_store_mo;
-
-        int m_a = 0;
-        int m_b = 0;
-        int m_c = 0;
-        int m_d = 0;
-        int m_e = 0;
-
-        std::atomic<bool> m_is_ready;
-
-        int m_counter = 0;
-
-        int m_max_counter = 0;
-
-        void producer ()
-        {
-            m_a = 1;
-            m_b = 2;
-            m_c = 3;
-            m_d = 4;
-            m_e = 5;
-
-            m_is_ready.store(true, m_store_mo);
-        }
-
-        void consumer ()
-        {
-            while (!m_is_ready.load(m_load_mo)) {}
-
-            m_is_ready = false;
-
-            m_counter++;
-            //std::cout << m_counter++ << std::endl;
-            if (m_a != 1 || m_b != 2 || m_c != 3 || m_d != 4 || m_e != 5)
+            if (random == 1)
             {
-                std::cout << "YOUR PC IS BROKEN! m_a:" << m_a
-                    << " m_b:" << m_b
-                    << " m_c:" << m_c
-                    << " m_d:" << m_d
-                    << " m_e:" << m_e
-                    << " m_counter:" << m_counter
-                    << std::endl;
+                _a = 10;
+                _b = 11;
+                _c = 12;
+                _s = 1;
+                return;
             }
 
-            //std::cout << "ok" << std::endl;
+            if (random == 2)
+            {
+                _a = 20;
+                _b = 21;
+                _c = 22;
+                _s = 2;
+                return;
+            }
 
-            m_a = 0;
-            m_b = 0;
-            m_c = 0;
-            m_d = 0;
-            m_e = 0;
+            if (random == 3)
+            {
+                _a = 30;
+                _b = 31;
+                _c = 32;
+                _s = 3;
+                return;
+            }
 
-            m_is_ready.store(false, m_store_mo);
+        };
+
+
+        void consumer()
+        {
+            while (_s == 0)
+            {
+            }
+
+            if (_s == 1)
+            {
+                if (_a != 10 || _b != 11 || _c != 12)
+                {
+                    std::cout << "cpu was broken _a" << std::endl;
+                    return;
+                }
+            }
+
+            if (_s == 2)
+            {
+                if (_a != 20 || _b != 21 || _c != 22)
+                {
+                    std::cout << "cpu was broken _b" << std::endl;
+                    return;
+                }
+            }
+
+            if (_s == 3)
+            {
+                if (_a != 30 || _b != 31 || _c != 32)
+                {
+                    std::cout << "cpu was broken _c" << std::endl;
+                    return;
+                }
+            }
+
         }
 
 
     public:
-
-        AtomicMotivation(std::memory_order load_mo, std::memory_order store_mo, int max_counter)
-            :m_load_mo(load_mo)
-            ,m_store_mo(store_mo)
-            ,m_max_counter(max_counter)
-        {}
-
-        void start_test()
+        void test(int j)
         {
-
-            while (true) {
-
-                m_is_ready = false;
-
-                //auto future_producer = std::async(std::launch::async, &Motivation::producer, this);
-                //auto future_consumer = std::async(std::launch::async, &Motivation::consumer, this);
-
-                //future_producer.wait();
-
-                //auto test_failed = future_consumer.get();
-                //clear();
-
-                std::thread producer (&AtomicMotivation::producer, this);
-                std::thread consumer (&AtomicMotivation::consumer, this);
+            for (int i = 0; i < j; ++i)
+            {
+                std::thread producer (&MotivationExplanation::producer, this);
+                std::thread consumer (&MotivationExplanation::consumer, this);
 
                 producer.join();
                 consumer.join();
 
-                if (m_max_counter == m_counter) return;
+                if (i % 1000 == 0)
+                {
+                    std::cout << "--- " << i << " ---" << std::endl;
+                }
+
+                _s = 0;
             }
         }
     };
+
+
+    class RelaxedExplanation
+    {
+        int _a = 0;
+        int _b = 0;
+        int _c = 0;
+
+        std::atomic<int> _s;
+
+        void producer()
+        {
+            int random = 1 + (rand() % 3);
+
+            if (random == 1)
+            {
+                _a = 10;
+                _b = 11;
+                _c = 12;
+                _s.store(1, std::memory_order_relaxed);
+                return;
+            }
+
+            if (random == 2)
+            {
+                _a = 20;
+                _b = 21;
+                _c = 22;
+                _s.store(2, std::memory_order_relaxed);
+                return;
+            }
+
+            if (random == 3)
+            {
+                _a = 30;
+                _b = 31;
+                _c = 32;
+                _s.store(3, std::memory_order_relaxed);
+                return;
+            }
+
+        };
+
+
+        void consumer()
+        {
+            int s = 0;
+            while (!s)
+            {
+                s = _s.load(std::memory_order_relaxed);
+            }
+
+            if (s == 1)
+            {
+                if (_a != 10 || _b != 11 || _c != 12)
+                {
+                    std::cout << "cpu was broken _a" << std::endl;
+                    return;
+                }
+            }
+
+            if (s == 2)
+            {
+                if (_a != 20 || _b != 21 || _c != 22)
+                {
+                    std::cout << "cpu was broken _b" << std::endl;
+                    return;
+                }
+            }
+
+            if (s == 3)
+            {
+                if (_a != 30 || _b != 31 || _c != 32)
+                {
+                    std::cout << "cpu was broken _c" << std::endl;
+                    return;
+                }
+            }
+
+        }
+
+
+    public:
+        void test(int j)
+        {
+            for (int i = 0; i < j; ++i)
+            {
+                _s = 0;
+
+                auto fp = std::async(std::launch::async, &RelaxedExplanation::producer, this);
+                auto fc = std::async(std::launch::async, &RelaxedExplanation::consumer, this);
+
+                fp.get();
+                fc.get();
+
+                if (i % 1000 == 0)
+                {
+                    std::cout << "--- " << i << " ---" << std::endl;
+                }
+            }
+        }
+    };
+
+
+    class CounterMutex
+    {
+        std::mutex _m;
+        int _ctr = 0;
+
+    public:
+
+        void inc()
+        {
+            _m.lock();
+            ++_ctr;
+            _m.unlock();
+        }
+
+        void test(int j)
+        {
+            std::vector<std::thread> thrds;
+            for (int i = 0; i < j; ++i)
+            {
+                thrds.push_back(std::thread(&CounterMutex::inc, this));
+            }
+
+            for (int i = 0; i < j; ++i)
+            {
+                thrds[i].join();
+            }
+        }
+    };
+
+    class SeqCstCounter
+    {
+        std::atomic<int> _ctr;
+
+    public:
+
+        void inc()
+        {
+            ++_ctr;
+        }
+
+        void test(int j)
+        {
+            _ctr = 0;
+            std::vector<std::thread> thrds;
+            for (int i = 0; i < j; ++i)
+            {
+                thrds.push_back(std::thread(&SeqCstCounter::inc, this));
+            }
+
+            for (int i = 0; i < j; ++i)
+            {
+                thrds[i].join();
+            }
+        }
+    };
+
+    class RelaxedCounter
+    {
+        std::atomic<int> _ctr;
+
+    public:
+
+        void inc()
+        {
+            _ctr.fetch_add(1, std::memory_order_relaxed);
+        }
+
+        void test(int j)
+        {
+            _ctr = 0;
+            std::vector<std::thread> thrds;
+            for (int i = 0; i < j; ++i)
+            {
+                thrds.push_back(std::thread(&RelaxedCounter::inc, this));
+            }
+
+            for (int i = 0; i < j; ++i)
+            {
+                thrds[i].join();
+            }
+        }
+    };
+
+
+
+
 
 }

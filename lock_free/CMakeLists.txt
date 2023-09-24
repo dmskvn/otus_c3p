@@ -3,6 +3,7 @@ set(TARGET_NAME LOCK_FREE)
 set(SRCS
   include/lock_free/Motivation.hpp
   include/lock_free/SpinLockMtx.hpp
+  include/lock_free/Stack.hpp
 )
 
 set(LIBS_PRIV
