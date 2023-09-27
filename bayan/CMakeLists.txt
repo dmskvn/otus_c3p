@@ -45,3 +45,31 @@ target_compile_definitions(${TARGET_NAME}
         PUBLIC ${DEFS_PUB}
         )
 
+add_executable("bayan" main.cpp)
+
+target_link_libraries("bayan" PRIVATE "CMD")
+target_link_libraries("bayan" PRIVATE "BAYAN")
+
+if (MSVC)
+    target_compile_options("bayan" PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        /W4
+    )
+else ()
+    target_compile_options("bayan" PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+endif()
+
+install(TARGETS "bayan" RUNTIME DESTINATION bin)

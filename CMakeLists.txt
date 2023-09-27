@@ -27,46 +27,19 @@ add_subdirectory(async)
 
 add_subdirectory(lock_free)
 
-add_executable(${PROJECT_NAME} main.cpp)
+#add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
-target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
-target_link_libraries(${PROJECT_NAME} PRIVATE "IP_FILTER")
-target_link_libraries(${PROJECT_NAME} PRIVATE "IP_TEMPLATE")
-target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORPLOT")
-target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDRAWING")
-target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDOCUMENT")
-target_link_libraries(${PROJECT_NAME} PRIVATE "MATRIX")
-target_link_libraries(${PROJECT_NAME} PRIVATE "CMD")
-target_link_libraries(${PROJECT_NAME} PRIVATE "BAYAN")
-target_link_libraries(${PROJECT_NAME} PRIVATE "ASYNC")
-target_link_libraries(${PROJECT_NAME} PRIVATE "LOCK_FREE")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "ALLOCATOR")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "VERSION_PROVIDER")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "IP_FILTER")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "IP_TEMPLATE")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORPLOT")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDRAWING")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "EDITORDOCUMENT")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "MATRIX")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "ASYNC")
+#target_link_libraries(${PROJECT_NAME} PRIVATE "LOCK_FREE")
 
-add_test(VERSION_PROVIDER_TEST version_provider/test/VERSION_PROVIDER_TEST)
-
-if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        /W4
-    )
-    target_compile_options(VERSION_PROVIDER PRIVATE
-        /W4
-    )
-    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
-        /W4
-    )
-else ()
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-    target_compile_options(VERSION_PROVIDER PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-endif()
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 

@@ -12,6 +12,12 @@ namespace byn
 
     std::vector<std::vector<std::string>> FilesProcessor::process (std::vector<std::string> files, std::size_t gapSize)
     {
+
+        if (files.empty())
+        {
+            return {};
+        }
+
         std::vector <FilesProcessor::FileContext> filesCntx;
 
         for (const auto& file : files)

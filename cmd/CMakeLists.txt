@@ -53,3 +53,31 @@ target_compile_definitions(${TARGET_NAME}
         PUBLIC ${DEFS_PUB}
 )
 
+add_executable("cmd" main.cpp)
+
+target_link_libraries("cmd" PRIVATE "CMD")
+
+if (MSVC)
+    target_compile_options("cmd" PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        /W4
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        /W4
+    )
+else ()
+    target_compile_options("cmd" PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(VERSION_PROVIDER_TEST PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+endif()
+
+install(TARGETS "cmd" RUNTIME DESTINATION bin)
+

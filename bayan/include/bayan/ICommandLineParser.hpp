@@ -10,7 +10,7 @@ namespace byn
 struct BayanSettings
 {
     std::vector<std::string> m_files;
-    int block_size;
+    int block_size = 5;
 };
 
 struct ICommandLineParser
