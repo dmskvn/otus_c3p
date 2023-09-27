@@ -53,12 +53,12 @@ target_compile_definitions(${TARGET_NAME}
         PUBLIC ${DEFS_PUB}
 )
 
-add_executable("cmd" main.cpp)
+add_executable("bulk" main.cpp)
 
-target_link_libraries("cmd" PRIVATE "CMD")
+target_link_libraries("bulk" PRIVATE "CMD")
 
 if (MSVC)
-    target_compile_options("cmd" PRIVATE
+    target_compile_options("bulk" PRIVATE
         /W4
     )
     target_compile_options(VERSION_PROVIDER PRIVATE
@@ -68,7 +68,7 @@ if (MSVC)
         /W4
     )
 else ()
-    target_compile_options("cmd" PRIVATE
+    target_compile_options("bulk" PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(VERSION_PROVIDER PRIVATE
@@ -79,5 +79,5 @@ else ()
     )
 endif()
 
-install(TARGETS "cmd" RUNTIME DESTINATION bin)
+install(TARGETS "bulk" RUNTIME DESTINATION bin)
 
