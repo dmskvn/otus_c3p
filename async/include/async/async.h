@@ -8,7 +8,5 @@ namespace async
 
     void receive(int handle, const char* buf, std::size_t buf_size);
 
-    void desconnect(int handle);
-
-    void flush();
+    void disconnect(int handle);
 }
