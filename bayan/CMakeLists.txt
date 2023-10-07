@@ -1,5 +1,7 @@
 set(TARGET_NAME BAYAN)
 
+set (CMAKE_CXX_STANDARD 17)
+
 find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 find_package(Threads)
 

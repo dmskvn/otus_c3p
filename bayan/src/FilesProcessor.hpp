@@ -13,7 +13,7 @@ class FilesProcessor : public IFilesProcessor
 
 public:
 
-    virtual std::vector<std::vector<std::string>> process(std::vector<std::string> files, std::size_t gapSize) override;
+    virtual std::vector<std::vector<std::string>> process(std::vector<std::string> directories, std::size_t gapSize) override;
 
 private:
 

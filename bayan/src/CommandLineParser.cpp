@@ -4,6 +4,7 @@
 #include <iterator>
 #include <boost/program_options.hpp>
 #include <exception>
+#include <filesystem>
 
 namespace po = boost::program_options;
 
@@ -25,13 +26,26 @@ struct CommandLineParser : ICommandLineParser
             po::parsed_options parsed_options = po::command_line_parser(cnt, args)
                 .options(desc).run();
             
-            std::vector<std::string> files;
+            std::vector<std::string> directories;
             std::string block_size;
 
             for (const po::option& o : parsed_options.options)
             {
-                if (o.string_key == "input") files.push_back(*o.value.cbegin());
+                if (o.string_key == "input") directories.push_back(*o.value.cbegin());
                 if (o.string_key == "block_size") block_size = *o.value.cbegin();
+            }
+
+            std::vector<std::string> files;
+
+            for (const auto& directory : directories)
+            {
+                for (const auto& file : std::filesystem::directory_iterator(directory))
+                {
+                    if (file.is_regular_file())
+                    {
+                        files.push_back(file.path());
+                    }
+                }
             }
 
             return BayanSettings{files, std::abs(std::atoi(block_size.c_str()))};
