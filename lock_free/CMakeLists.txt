@@ -1,5 +1,7 @@
 set(TARGET_NAME LOCK_FREE)
 
+find_package(Threads)
+
 set(SRCS
   include/lock_free/Motivation.hpp
   include/lock_free/SpinLockMtx.hpp
@@ -38,3 +40,15 @@ target_compile_definitions(${TARGET_NAME}
   PUBLIC ${DEFS_PUB}
 )
 
+add_executable("lock_free_example" main.cpp)
+
+target_link_libraries(${TARGET_NAME}
+  PRIVATE ${LIBS_PRIV}
+  PUBLIC ${LIBS_PUB}
+)
+
+
+target_link_libraries("lock_free_example" PRIVATE ${TARGET_NAME} pthread)
+
+
+install(TARGETS ${TARGET_NAME} RUNTIME DESTINATION bin)

@@ -43,20 +43,19 @@ public:
         node<T>* old_head = _head.load(std::memory_order_relaxed);
         node<T>* new_head;
 
-        do {
-            if(old_head == nullptr) {
-                // need to re-check because every retry reloads old_head
-                // pop in another thread might have emptied the list
-                return nullptr;
-             }
+        do{
 
-             new_head = old_head->_next;
-             // if head still equals old_head this implies the same relation for new_head
+            if(old_head == nullptr)
+            {
+                return nullptr;
+            }
+
+            new_head = old_head->_next;
+
          } while(!_head.compare_exchange_weak(old_head, new_head,
             std::memory_order_acquire, std::memory_order_relaxed));
-         // Note the ordering change: acquire for both success and failure
 
-         return old_head->_data;  // defer deletion until some later time
+         return old_head->_data;
 
     }
 
@@ -99,9 +98,9 @@ class StackLFTest
         std::thread p1(&StackLFTest::producer, this, 0, 100000);
         std::thread p2(&StackLFTest::producer, this, 100000, 100000);
         std::thread p3(&StackLFTest::producer, this, 200000, 100000);
-        std::thread p4(&StackLFTest::producer, this, 500000, 100000);
-        std::thread p5(&StackLFTest::producer, this, 600000, 100000);
-        std::thread p6(&StackLFTest::producer, this, 700000, 100000);
+        std::thread p4(&StackLFTest::producer, this, 300000, 100000);
+        std::thread p5(&StackLFTest::producer, this, 400000, 100000);
+        std::thread p6(&StackLFTest::producer, this, 500000, 100000);
 
         //std::this_thread::sleep_for(std::chrono::seconds(2));
 

@@ -95,10 +95,10 @@ namespace lock_free {
                 producer.join();
                 consumer.join();
 
-                if (i % 1000 == 0)
-                {
-                    std::cout << "--- " << i << " ---" << std::endl;
-                }
+//                if (i % 1000 == 0)
+//                {
+//                    std::cout << "--- " << i << " ---" << std::endl;
+//                }
 
                 _s = 0;
             }
@@ -199,13 +199,116 @@ namespace lock_free {
                 fp.get();
                 fc.get();
 
-                if (i % 1000 == 0)
-                {
-                    std::cout << "--- " << i << " ---" << std::endl;
-                }
+//                if (i % 1000 == 0)
+//                {
+//                    std::cout << "--- " << i << " ---" << std::endl;
+//                }
             }
         }
     };
+
+
+    class AquireReleaseExplanation
+    {
+        int _a = 0;
+        int _b = 0;
+        int _c = 0;
+
+        std::atomic<int> _s;
+
+        void producer()
+        {
+            int random = 1 + (rand() % 3);
+
+            if (random == 1)
+            {
+                _a = 10;
+                _b = 11;
+                _c = 12;
+                _s.store(1, std::memory_order_release);
+                return;
+            }
+
+            if (random == 2)
+            {
+                _a = 20;
+                _b = 21;
+                _c = 22;
+                _s.store(2, std::memory_order_release);
+                return;
+            }
+
+            if (random == 3)
+            {
+                _a = 30;
+                _b = 31;
+                _c = 32;
+                _s.store(3, std::memory_order_release);
+                return;
+            }
+
+        };
+
+
+        void consumer()
+        {
+            int s = 0;
+            while (!s)
+            {
+                s = _s.load(std::memory_order_acquire);
+            }
+
+            if (s == 1)
+            {
+                if (_a != 10 || _b != 11 || _c != 12)
+                {
+                    std::cout << "cpu was broken _a" << std::endl;
+                    return;
+                }
+            }
+
+            if (s == 2)
+            {
+                if (_a != 20 || _b != 21 || _c != 22)
+                {
+                    std::cout << "cpu was broken _b" << std::endl;
+                    return;
+                }
+            }
+
+            if (s == 3)
+            {
+                if (_a != 30 || _b != 31 || _c != 32)
+                {
+                    std::cout << "cpu was broken _c" << std::endl;
+                    return;
+                }
+            }
+
+        }
+
+
+    public:
+        void test(int j)
+        {
+            for (int i = 0; i < j; ++i)
+            {
+                _s = 0;
+
+                auto fp = std::async(std::launch::async, &AquireReleaseExplanation::producer, this);
+                auto fc = std::async(std::launch::async, &AquireReleaseExplanation::consumer, this);
+
+                fp.get();
+                fc.get();
+
+//                if (i % 1000 == 0)
+//                {
+//                    std::cout << "--- " << i << " ---" << std::endl;
+//                }
+            }
+        }
+    };
+
 
 
     class CounterMutex
