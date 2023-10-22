@@ -49,14 +49,11 @@ namespace async
         FileWriter(std::string prefix)
             : m_prefix(std::move(prefix))
         {
-            std::cout << "file writer" << std::endl;
         }
 
         void write(const std::string& data)
         {
             const auto file_name = m_prefix + std::to_string(cnt);
-            std::cout << "write to " << file_name << " " << data;
-            std::cout << '\n';
 
             _file.open(file_name, std::fstream::out);
             _file.write(data.c_str(), data.size());
@@ -94,65 +91,42 @@ namespace async
     {
 
         std::unique_ptr<ISink> m_sink;
-        std::optional<std::future<void>> m_thread;
+
+        std::atomic<bool> m_stop;
         std::queue<std::string> m_pending;
         std::mutex m_mtx;
 
+        std::unique_ptr<std::thread> m_thread;
+
         BaseMTWriter(std::unique_ptr<ISink> sink)
             :m_sink(std::move(sink))
-        {}
+            ,m_stop(false)
+        {
+            m_thread = std::make_unique<std::thread>(&BaseMTWriter::task, this);
+        }
 
         void task()
         {
-            while(true)
+            while(m_stop.load(std::memory_order_relaxed))
             {
-                std::string data;
-                {
-                    std::lock_guard <std::mutex> lg(m_mtx);
-                    if (m_pending.empty()) return;
-                    data = m_pending.back();
-                    m_pending.pop();
-                }
-                m_sink->write(data);
+                std::lock_guard <std::mutex> lg(m_mtx);
+                if (m_pending.empty()) continue;
+                m_sink->write(m_pending.front());
+                m_pending.pop();
             }
-        }
-
-        std::optional<std::future<void>> create_task()
-        {
-            auto task = std::async(std::launch::async, &BaseMTWriter::task, this);
-            return std::make_optional<std::future<void>>(std::move(task));
         }
 
         virtual void write(std::string data) override
         {
             std::lock_guard <std::mutex> lg(m_mtx);
             m_pending.push(data);
-            if (!m_thread || m_thread.value().wait_for(std::chrono::seconds(0))
-                   == std::future_status::ready)
-            {
-                m_thread = create_task();
-            }
-
         }
 
         virtual void stop() override
         {
-            while (true)
-            {
-                std::lock_guard <std::mutex> lg(m_mtx);
-                if (m_pending.empty())
-                {
-                    if (!m_thread)
-                    {
-                        return;
-                    }
-                    if(m_thread.value().wait_for(std::chrono::seconds(0))
-                        == std::future_status::ready)
-                    {
-                        return;
-                    }
-                }
-            }
+            m_stop.store(true, std::memory_order_relaxed);
+            while (m_pending.empty())
+            {}
         }
     };
 
@@ -195,8 +169,15 @@ namespace async
                 }
 
                 m_cout->write(line);
-                m_log1->write(line);
-                m_log2->write(line);
+                if (!(handle % 2))
+                {
+                    m_log1->write(line);
+                }
+                else
+                {
+                    m_log2->write(line);
+                }
+
             }
         }
 
